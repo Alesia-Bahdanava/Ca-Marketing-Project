@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.core import driver
@@ -23,17 +25,9 @@ class ChromeSearch(unittest.TestCase):
 
         #Verify Homepage Title
         hlp.assert_title(driver, "Home | California Marcketing")
-
+        # Check unique el
         hlp.home_page_elements(driver, "LET CALIFORNIA MARKETING GROW YOUR BUSINECS", "CALIFORNIA MARCKETING")
 
-        #Verify Homepage Title
-#        try:
-#            assert driver.title == hlp.main_title
-#           print("Current main title is correct:" ,driver.title)
-#        except AssertionError:
-#            print("Current main title is NOT correct", driver.title)
-
-        #Check unique el
         #Find main img
         if driver.find_element(By.XPATH,"//img[@alt='iot_sq.png']"):
             print("Main img was found")
@@ -46,26 +40,30 @@ class ChromeSearch(unittest.TestCase):
         else:
             print("Main text LOST")
 
-        # Scroll page on 800 pixel down to found another element
-        driver.execute_script("window.scrollBy(0, 800)")
+        #LogIn in exist accaunt
+        hlp.LogIn(driver)
 
-        #Find products
-        if driver.find_element(By.XPATH,"//div[@class='JMHZvW']"):
-            print("Products was found")
+
+
+        #Verify title
+        #hlp.assert_title(driver, )
+
+        if driver.find_element(By.XPATH,"//div[@class='GVjl6y']//*[name()='svg']"):
+            print("Coool")
         else:
-            print("Products LOST")
+            print("Not cool")
 
-        #
-
-        driver.find_element(By.TAG_NAME,'html').send_keys(Keys.UP)
-
-
+        #Go to addresses
+        time.sleep(3)
+        hlp.Address(driver)
 
 
 
-        # Go to Log in page
-        LogIn = driver.find_element(By.XPATH, "//span[contains(text(),'Log In')]")
-        LogIn.click()
+
+
+
+
+
 
 
 
