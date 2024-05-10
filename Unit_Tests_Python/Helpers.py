@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from faker import Faker
 from selenium import webdriver
+from selenium import webdriver
+import pickle
+
 
 #driver = webdriver
 
@@ -15,6 +18,9 @@ from selenium import webdriver
 
 # URL main page
 url_main_page = "https://qasvus.wixsite.com/ca-marketing"
+
+#Url accaunt
+url_account = "https://qasvus.wixsite.com/ca-marketing/account/my-account"
 
 # URL address page
 url_address_page = "https://qasvus.wixsite.com/ca-marketing/account/my-addresses"
@@ -64,6 +70,12 @@ def home_page_elements(driver, text1, text2):
 # Log In in exist account
 
 def LogIn(driver):
+    driver.execute_script("window.open('about:blank', 'tab1')")
+    driver.switch_to.window(driver.window_handles[1])
+    driver.get(url_main_page)
+    driver.switch_to.window(driver.window_handles[0])
+    time.sleep(5)
+
     # Wait until button 'Login' will be clickable
     wait = WebDriverWait(driver, 10)
     wait.until(EC.element_to_be_clickable((By.XPATH,"//span[contains(text(),'Log In')]")))
@@ -72,25 +84,44 @@ def LogIn(driver):
     delay()
     # Switch from 'Sign Up' to 'Log In'
     wait.until(EC.element_to_be_clickable((By.XPATH,"//button[contains(text(),'Log In')]")))
+    time.sleep(5)
     driver.find_element(By.XPATH,"//button[contains(text(),'Log In')]").click()
+    time.sleep(2)
     # Set wait until button 'Log In with Email' will be visible and click on it
     wait.until(EC.element_to_be_clickable((By.XPATH,"//span[normalize-space()='Log in with Email']")))
+    time.sleep(2)
     driver.find_element(By.XPATH,"//span[normalize-space()='Log in with Email']").click()
+    time.sleep(2)
     # Clear and fill fields
     #wait.until(EC.element_to_be_clickable((By.XPATH, "input_input_emailInput_SM_ROOT_COMP790")))
     driver.find_element(By.XPATH,"//input[@id='input_input_emailInput_SM_ROOT_COMP783']").click()
+    time.sleep(3)
     driver.find_element(By.XPATH, "//input[@id='input_input_emailInput_SM_ROOT_COMP783']").clear()
+    time.sleep(2)
     driver.find_element(By.XPATH, "//input[@id='input_input_emailInput_SM_ROOT_COMP783']").send_keys(user_email)
+    time.sleep(2)
     print("Email done")
     driver.find_element(By.XPATH,"//input[@id='input_input_passwordInput_SM_ROOT_COMP783']").click()
+    time.sleep(2)
     driver.find_element(By.XPATH, "//input[@id='input_input_passwordInput_SM_ROOT_COMP783']").clear()
+    time.sleep(2)
     driver.find_element(By.XPATH, "//input[@id='input_input_passwordInput_SM_ROOT_COMP783']").send_keys(user_password)
+    time.sleep(2)
     print("Password done")
-    driver.find_element(By.XPATH,"//*[@class='uDW_Qe wixui-button PlZyDq'][@aria-disabled='true']").click()
+    time.sleep(5)
+    #capture
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//body/div[@id='SITE_CONTAINER']/div[@id='main_MF']/div[6]/div[2]/div[1]/div[1]/form[1]/div[3]/div[1]/div[2]")))
+    time.sleep(5)
+    driver.find_element(By.XPATH,"//body/div[@id='SITE_CONTAINER']/div[@id='main_MF']/div[6]/div[2]/div[1]/div[1]/form[1]/div[3]/div[1]/div[2]").click()
+    time.sleep(15)
+    driver.find_element(By.XPATH,"//body/div[@id='SITE_CONTAINER']/div[@id='main_MF']/div[6]/div[2]/div[1]/div[1]/form[1]/div[4]/div[1]/button[1]").click()
+    time.sleep(5)
+    print("next page")
+    time.sleep(3)
 
-def Address(driver):
-    # Wait and click on user's account button for opening drop-down menu
-    wait = WebDriverWait(driver, 10)
-    wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='GVjl6y']//*[name()='svg']")))
-    # Click drop down menu
-    driver.find_element(By.XPATH,"//div[@class='GVjl6y']//*[name()='svg']").click()
+def open_existing_account(driver):
+    # Switch to the first tab
+    driver.switch_to.window(driver.window_handles[0])
+    # Open existing account in the first tab
+    driver.get("https://qasvus.wixsite.com/ca-marketing/account/my-account")
+
